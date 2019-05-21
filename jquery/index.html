@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width,initial-scale=1.0">
+  <title>Coding MADness!</title>
+
+  <style>
+    #app {
+      font-family: 'Avenir', Helvetica, Arial, sans-serif;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      text-align: center;
+      color: #2c3e50;
+      margin-top: 60px;
+    }
+  </style>
+
+</head>
+
+<body>
+
+  <!-- Our HTML content. The scripts are loaded below. -->
+  <div id="app">
+    <h1>jQuery!</h1>
+    <div>
+      <h1>Have fun @ Coding MADness!</h1>
+      <p>Welcome: <span id="name">[waiting for server]</span>!</p>
+      <button onclick="buy()">Buy 1 share of ING</button>
+      <h2>Latest news:</h2>
+      <p><span id="news">No latest news yet!</span></p>
+    </div>
+  </div>
+
+  <!-- Include jQuery! -->
+  <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"></script>
+
+  <!-- First load the gql client, api.js depends on it -->
+  <script src="simple-gql-client.js"></script>
+
+  <!-- Load your api connection, remember to set the TOKEN -->
+  <script src="api.js"></script>
+
+  <script>
+
+    let companyId = null
+
+    function handleGameUpdate(game) {
+      // For now we want to extract the companyId and player name
+      $("#name").text(game.player.name);
+      companyId = game.companies.find(c => c.key === "ing").id;
+    }
+
+    // Subscribe to game updates
+    activeGameSubscription().subscribe({
+      next: ({ data }) => {
+        // Handle the game update
+        handleGameUpdate(data.activeGame);
+      },
+      error: e => {
+        console.error(e);
+      }
+    });
+
+    // Also subscribe to news updates
+    newsSubscription().subscribe({
+      next: ({ data }) => {
+        // Show the news
+        console.log(data)
+        $("#news").text(data.news.headline);
+      },
+      error: e => {
+        console.error(e);
+      }
+    });
+
+    // When the buy button is pressed
+    async function buy() {
+      if (companyId) {
+        try {
+          const id = await placeImmediateBuyOrder(companyId, 1);
+          alert("We bought a new share with id: " + id);
+        } catch (e) {
+          alert(e.message);
+        }
+      } else {
+        alert(
+          "Please wait for the first server response. (Did you fill in your credentials?)"
+        );
+      }
+    }
+
+  </script>
+</body>
+
+</html>

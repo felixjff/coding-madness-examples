@@ -15,7 +15,7 @@ export default {
   name: "HelloWorld",
 
   data: () => ({
-    name: "<waiting for server>",
+    name: "[waiting for server]",
     companyId: null,
     news: "No latest news yet!"
   }),
@@ -58,8 +58,8 @@ export default {
     // Also subscribe to news updates
     this.newsSubscription = api.newsSubscription().subscribe({
       next: ({ data }) => {
-        // Add
-        console.log(data)
+        // Show the news
+        console.log(data);
         this.news = data.news.headline;
       },
       error: e => {

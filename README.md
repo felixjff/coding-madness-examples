@@ -4,7 +4,7 @@ This repo contains 3 examples:
 
 ## VueJS
 
-Use this example if you're a VueJS fan. Or just want to learn VueJS
+Use this example if you're a VueJS fan. Or just want to learn VueJS.
 
 ## React
 

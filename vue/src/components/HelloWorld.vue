@@ -43,7 +43,7 @@ export default {
   },
 
   // This method is called once when the component is started
-  async mounted() {
+  mounted() {
     // Subscribe to game updates
     this.querySubscription = api.activeGameSubscription().subscribe({
       next: ({ data }) => {

@@ -1,6 +1,7 @@
 
 import Client, { gql } from './apollo-graphql-client'
 
+
 // Fill in your token here
 const TOKEN = null
 
@@ -10,6 +11,7 @@ const authorization = "Bearer " + TOKEN
 const uri = "https://traders.madx.nl"
 const wsUri = "wss://traders.madx.nl/graphql"
 
+// Create our api client
 const client = new Client(uri, wsUri, authorization)
 
 /**

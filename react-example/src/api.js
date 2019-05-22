@@ -1,6 +1,9 @@
 
+import Client, { gql } from './apollo-graphql-client'
+
+
 // Fill in your token here
-const TOKEN = null
+const TOKEN = "eyJhbGciOiJIUzI1NiJ9.c2tvb25ob3ZlbkBnbWFpbC5jb20.NwHZ-aACygsCcRk4Bgya9AEgtGTU_ccnyQvhYm3Z8GQ"
 
 if (!TOKEN) alert("No api token set. Insert your personal token in api.js!")
 
@@ -9,12 +12,12 @@ const uri = "https://traders.madx.nl"
 const wsUri = "wss://traders.madx.nl/graphql"
 
 // Create our api client
-const client = new SimpleGQLClient(uri, wsUri, authorization)
+const client = new Client(uri, wsUri, authorization)
 
 /**
  * Starts a subscription on the active game
  */
-function activeGameSubscription() {
+export function activeGameSubscription() {
 
   return client.subscribe({
     query: SUBSCRIPTION_GAME_QUERY,
@@ -24,7 +27,7 @@ function activeGameSubscription() {
 /**
  * Start a subscription on news items
  */
-function newsSubscription() {
+export function newsSubscription() {
 
   return client.subscribe({
     query: SUBSCRIPTION_NEWS_QUERY,
@@ -34,7 +37,7 @@ function newsSubscription() {
 /**
  * Manually retrieves the game from the server
  */
-async function getGame() {
+export async function getGame() {
 
   const { data, errors } = await client.query({
     query: GAME_QUERY,
@@ -48,7 +51,7 @@ async function getGame() {
 /**
  * Manually retrieves the lates news from the server
  */
-async function getNews() {
+export async function getNews() {
 
   const { data, errors } = await client.query({
     query: NEWS_QUERY,
@@ -67,7 +70,7 @@ async function getNews() {
  * @param {number} amount The amount of shares to buy
  * @param {number} target The target price to buy shares for
  */
-async function placeBuyOrder(companyId, amount, target) {
+export async function placeBuyOrder(companyId, amount, target) {
 
   const { data, errors } = await client.mutate({
     mutation: BUY_QUERY,
@@ -89,7 +92,7 @@ async function placeBuyOrder(companyId, amount, target) {
  * @param {string} companyId The company id
  * @param {number} amount The amount of shares to buy
  */
-async function placeImmediateBuyOrder(companyId, amount) {
+export async function placeImmediateBuyOrder(companyId, amount) {
 
   const { data, errors } = await client.mutate({
     mutation: BUY_IMMEDIATE_QUERY,
@@ -112,7 +115,7 @@ async function placeImmediateBuyOrder(companyId, amount) {
  * @param {number} amount The amount of shares to sell
  * @param {number} target The target price to sell shares for
  */
-async function placeSellOrder(companyId, amount, target) {
+export async function placeSellOrder(companyId, amount, target) {
 
   const { data, errors } = await client.mutate({
     mutation: SELL_QUERY,
@@ -134,7 +137,7 @@ async function placeSellOrder(companyId, amount, target) {
  * @param {string} companyId The company id
  * @param {number} amount The amount of shares to sell
  */
-async function placeImmediateSellOrder(companyId, amount) {
+export async function placeImmediateSellOrder(companyId, amount) {
 
   const { data, errors } = await client.mutate({
     mutation: SELL_IMMEDIATE_QUERY,
@@ -154,7 +157,7 @@ async function placeImmediateSellOrder(companyId, amount) {
  * 
  * @param {string} orderId The order id
  */
-async function cancelOrder(orderId) {
+export async function cancelOrder(orderId) {
 
   const { data, errors } = await client.mutate({
     mutation: CANCEL_QUERY,
